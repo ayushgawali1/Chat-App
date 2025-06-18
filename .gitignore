@@ -1,0 +1,34 @@
+# === Backend ===
+Backend/node_modules/
+Backend/.env
+Backend/.env.*  # Optional for variants like .env.development
+Backend/dist/
+Backend/*.log
+Backend/npm-debug.log*
+Backend/yarn-debug.log*
+Backend/yarn-error.log*
+
+# === Frontend ===
+Frontend/node_modules/
+Frontend/.env
+Frontend/.env.*  # For Vite environment files like .env.local
+Frontend/dist/
+Frontend/build/
+Frontend/.next/
+Frontend/coverage/
+Frontend/*.log
+Frontend/npm-debug.log*
+Frontend/yarn-debug.log*
+Frontend/yarn-error.log*
+
+# === Global ===
+*.log
+*.log.*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
