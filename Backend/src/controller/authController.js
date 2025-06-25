@@ -2,13 +2,15 @@ import userModule from "../modules/user.js";
 
 // Signup
 export const signup = async (req, res) => {
-    const { name, userName, password } = req.body;
+    console.log("signup");
+    
+    const { name, email, password } = req.body;
     try {
-        const existingUser = await userModule.findOne({ userName });
+        const existingUser = await userModule.findOne({ email });
         if (existingUser) return res.status(400).json({ msg: 'User already exists' });
-        const newUser = new userModule({ name, userName, password });
+        const newUser = new userModule({ name, email, password });
         await newUser.save();
-        res.status(201).json({ msg: 'User created', data: newUser });
+        res.status(201).json({ msg: 'User created', userData: newUser });
     } catch (error) {
         console.log("Error in SignUp ", error.message);
         res.status(500).json({ msg: 'Server Side Error' });
@@ -17,15 +19,17 @@ export const signup = async (req, res) => {
 
 // Login
 export const login = async (req, res) => {
-    const { userName, password } = req.body;
+    console.log("login");
+
+    const { email, password } = req.body;
     try {
-        const user = await userModule.findOne({ userName });
+        const user = await userModule.findOne({ email });
         if (!user) return res.status(404).json({ msg: 'User not found' });
 
         const isMatch = (password === user.password);
         if (!isMatch) return res.status(401).json({ msg: 'Invalid credentials' });
 
-        res.status(201).json({ msg: 'Successfully Login', data: user });
+        res.status(201).json({ msg: 'Successfully Login', userData: user });
 
     } catch (error) {
         console.log("Error in login ", error.message);
@@ -39,9 +43,23 @@ export const getUser = async (req, res) => {
     try {
         const user = await userModule.findById(userId);
         if (!user) return res.status(404).json({ msg: 'User not found' });
-        res.status(201).json(user);
+        res.status(201).json({userData:user});
     } catch (error) {
         console.log("Error in getUser ", error.message);
+        res.status(500).json({ msg: 'Server Side Error' });
+    }
+}
+
+export const getUsers = async (req, res) => {
+    const { name, id } = req.body;
+    try {
+        const users = await userModule.find({
+            name: new RegExp(`^${name}`, 'i'),  // name = input value (e.g., "b")
+            _id: { $ne: id }
+        });
+        res.status(201).json(users);
+    } catch (error) {
+        console.log("Error in getUsers ", error.message);
         res.status(500).json({ msg: 'Server Side Error' });
     }
 }

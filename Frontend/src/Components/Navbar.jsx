@@ -12,7 +12,7 @@ function Navbar() {
         localStorage.clear('id');
         setIsLogin(false);
         setUserData(null);
-        navigate('/login');
+        navigate('/login-signup');
         disconnectSocket();
     }
 
@@ -28,7 +28,7 @@ function Navbar() {
                         <div onClick={logout} className='hover:cursor-pointer hover:bg-amber-500 p-2 rounded bg-blue-400'>Logout</div>
                     </>
                     :
-                        <div onClick={() => navigate('/login')} className='hover:cursor-pointer hover:bg-amber-500 p-2 rounded bg-blue-400'>Login</div>
+                        <div onClick={() => navigate('/login-signup')} className='hover:cursor-pointer hover:bg-amber-500 p-2 rounded bg-blue-400'>Login</div>
                     }
             </div>
         </div>

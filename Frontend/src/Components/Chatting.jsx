@@ -10,15 +10,17 @@ function Chatting({ selectedUser }) {
 
   const { Backend_URL, socket, onlineUserSocketId, chatMessages, setChatMessages } = useContext(Context);
 
-
+  console.log("Selected User Data ",selectedUser);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const msg = text;
+    
     try {
       const response = await axios.post(`${Backend_URL}/message/send-message`,
         {
           receiverId: selectedUser._id,
-          msg: msg
+          msg: msg,
+          chatId: selectedUser.chatId
         },
         {
           headers: {
@@ -51,14 +53,13 @@ function Chatting({ selectedUser }) {
     try {
       const responce = await axios.get(`${Backend_URL}/message/get-message`, {
         headers: { token: localStorage.getItem('id') },
-        params: { receiverId: selectedUser._id }
+        params: { chatId: selectedUser.chatId }
       })
       setChatMessages(responce.data);
     } catch (error) {
       console.log("Error in getMessage");
     }
   }
-
 
   useEffect(() => {
     getMessage();
@@ -69,13 +70,12 @@ function Chatting({ selectedUser }) {
       {/* Top */}
       <div className='bg-emerald-950 flex flex-col'>
         <span>{selectedUser.name}</span>
-        <span> {onlineUserSocketId.some(item => item[selectedUser._id] != null) ? "Online" : "Offline" }</span>
+        <span> {onlineUserSocketId.some(item => item[selectedUser._id] != null) ? "Online" : "Offline"}</span>
       </div>
 
 
       {/* messages */}
       <div>
-        {console.log(chatMessages)}
         {chatMessages.map((data) => {
           if (data.sender == localStorage.getItem('id')) {
             return (

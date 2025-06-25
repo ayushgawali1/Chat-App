@@ -4,6 +4,7 @@ import connectDB from "./lib/db.js";
 import cors from "cors";
 import messageRoute from "./routes/messageRoute.js";
 import { app,server } from "./lib/socket.js";
+import chatRoute from "./routes/chatRoute.js";
 
 
 const PORT = 5000;
@@ -20,6 +21,7 @@ app.get("/",(req,res)=>{
 
 app.use("/auth",authRoute);
 app.use("/message",messageRoute);
+app.use('/chat',chatRoute);
 
 
 server.listen(PORT,()=>{

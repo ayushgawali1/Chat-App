@@ -7,6 +7,9 @@ import { useContext, useEffect } from "react"
 import { Context } from "./store/context"
 import axios from "axios"
 import Profile from "./Pages/Profile"
+import AddFriend from "./Pages/AddFriend"
+import CreateGroup from "./Pages/createGroup"
+import LoginSignup from "./Pages/LoginSignup"
 
 function App() {
 
@@ -34,9 +37,10 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signUp" element={<SignUp />} />
+        <Route path="/login-signup" element={<LoginSignup />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/search" element={<AddFriend />} />
+        <Route path="/create-group" element={<CreateGroup />} />
       </Routes>
     </div>
   )
