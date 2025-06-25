@@ -2,8 +2,6 @@ import userModule from "../modules/user.js";
 
 // Signup
 export const signup = async (req, res) => {
-    console.log("signup");
-    
     const { name, email, password } = req.body;
     try {
         const existingUser = await userModule.findOne({ email });
@@ -19,8 +17,6 @@ export const signup = async (req, res) => {
 
 // Login
 export const login = async (req, res) => {
-    console.log("login");
-
     const { email, password } = req.body;
     try {
         const user = await userModule.findOne({ email });

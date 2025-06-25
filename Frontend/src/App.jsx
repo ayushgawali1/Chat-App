@@ -1,8 +1,6 @@
 import { Routes, Route } from "react-router"
 import Home from './Pages/Home'
 import Navbar from './Components/Navbar'
-import Login from './Pages/Login'
-import SignUp from "./Pages/SignUp"
 import { useContext, useEffect } from "react"
 import { Context } from "./store/context"
 import axios from "axios"
@@ -10,6 +8,7 @@ import Profile from "./Pages/Profile"
 import AddFriend from "./Pages/AddFriend"
 import CreateGroup from "./Pages/createGroup"
 import LoginSignup from "./Pages/LoginSignup"
+import { ToastContainer} from 'react-toastify';
 
 function App() {
 
@@ -34,6 +33,7 @@ function App() {
 
   return (
     <div>
+      <ToastContainer />
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />

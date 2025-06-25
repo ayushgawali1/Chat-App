@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react'
 import axios from 'axios';
 import { Context } from '../store/context';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {toast } from 'react-toastify';
 
 function LoginSignup() {
 
-    const {Backend_URL,setUserData} = useContext(Context);
+    const { Backend_URL, setUserData } = useContext(Context);
 
     const navigate = useNavigate();
 
@@ -25,18 +26,18 @@ function LoginSignup() {
         }))
     }
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const value = isLogin ? 'login' : 'signup';
         try {
-            const responce = await axios.post(`${Backend_URL}/auth/${value}`,formData);
-            alert(responce.data.msg);
-            localStorage.setItem('id', responce.data.formData._id);
-            navigate('/');
+            const responce = await axios.post(`${Backend_URL}/auth/${value}`, formData);
+            toast.success(responce.data.msg);
+            localStorage.setItem('id', responce.data.userData._id);
             setUserData(responce.data.userData);
+            navigate('/');
         } catch (error) {
             console.log("Error in handleSubmit of LoginSignup", error);
-            alert(error.response?.data.msg);
+            toast.error(error.response?.data.msg);
         }
     }
 
