@@ -2,8 +2,6 @@ import { createContext, useEffect, useState } from 'react';
 import { io } from "socket.io-client";
 
 export const Context = createContext({
-    isLogin: false,
-    setIsLogin: () => { },
     Backend_URL: "http://localhost:5000",
     userData: {},
     setUserData: () => { },
@@ -26,10 +24,9 @@ const socket = io(Backend_URL, {
 
 const ContextProvider = ({ children }) => {
 
-    const [isLogin, setIsLogin] = useState(false);
+    // const [isLogin, setIsLogin] = useState(false);
     const [userData, setUserData] = useState(null);
     const [onlineUserSocketId, setOnlineUserSocketId] = useState([]);
-    // const [realTimeChat,setRealTimeChat] = useState([]);
     const [chatMessages, setChatMessages] = useState([]);
 
 
@@ -73,7 +70,7 @@ const ContextProvider = ({ children }) => {
     }, [])
 
     const value = {
-        isLogin, setIsLogin, Backend_URL, userData, setUserData,
+        Backend_URL, userData, setUserData,
         socket, connectSocket, sendReceiveMsg, disconnectSocket, onlineUserSocketId ,
         chatMessages, setChatMessages
     }

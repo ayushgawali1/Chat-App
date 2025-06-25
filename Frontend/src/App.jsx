@@ -8,19 +8,19 @@ import Profile from "./Pages/Profile"
 import AddFriend from "./Pages/AddFriend"
 import CreateGroup from "./Pages/createGroup"
 import LoginSignup from "./Pages/LoginSignup"
-import { ToastContainer} from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import { Navigate } from 'react-router-dom';
 
 function App() {
 
-  const { setIsLogin, setUserData, Backend_URL,connectSocket,socket } = useContext(Context);
+  const { userData, setUserData, Backend_URL, connectSocket, socket } = useContext(Context);
 
   const getUser = async () => {
     const id = localStorage.getItem('id');
     try {
       const responce = await axios.post(`${Backend_URL}/auth/user`, { userId: id });
       setUserData(responce.data);
-      setIsLogin(true);
-      socket.auth = {userId:id}
+      socket.auth = { userId: id }
       connectSocket();
     } catch (error) {
       console.log("error in get User", error.message);
@@ -36,9 +36,9 @@ function App() {
       <ToastContainer />
       <Navbar />
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path="/login-signup" element={<LoginSignup />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path='/' element={userData ? <Home /> : <Navigate to="/login-signup" />} />
+        <Route path="/login-signup" element={ userData ? <Navigate to="/" />  : <LoginSignup />} />
+        <Route path="/profile" element={ userData ? <Profile /> : <Navigate to="/login-signup" /> } />
         <Route path="/search" element={<AddFriend />} />
         <Route path="/create-group" element={<CreateGroup />} />
       </Routes>
