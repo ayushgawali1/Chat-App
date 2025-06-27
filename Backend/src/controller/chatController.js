@@ -15,7 +15,6 @@ export const getChats = async (req, res) => {
 
 export const createChats = async (req, res) => {
     const { userId, user } = req.body;
-
     try {
         const chat = await ChatModule.findOne({
             users: { $all: [user._id, userId] },

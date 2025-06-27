@@ -2,58 +2,19 @@ import axios from "axios";
 import { useContext } from "react";
 import { Context } from "../store/context";
 import { useEffect } from "react";
-import { useState } from "react";
+import Header from "./Chatting/Header";
+import Messages from "./Chatting/Messages";
+import Sending from "./Chatting/Sending";
 
-function Chatting({ selectedUser }) {
-
-  const [text, setText] = useState('');
+function Chatting({ selectedChat }) {
 
   const { Backend_URL, socket, onlineUserSocketId, chatMessages, setChatMessages } = useContext(Context);
-
-  console.log("Selected User Data ",selectedUser);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const msg = text;
-    
-    try {
-      const response = await axios.post(`${Backend_URL}/message/send-message`,
-        {
-          receiverId: selectedUser._id,
-          msg: msg,
-          chatId: selectedUser.chatId
-        },
-        {
-          headers: {
-            token: localStorage.getItem('id')
-          }
-        }
-      );
-      setChatMessages((prev) => [
-        ...prev,
-        response.data.newMessage
-      ]);
-      setText('');
-      const socketIdArray = onlineUserSocketId.filter((obj) => {
-        const userId = Object.keys(obj)[0];
-        if (userId == selectedUser._id) {
-          return obj[userId]
-        }
-      });
-      const socketId = socketIdArray[0][selectedUser._id];
-      const sender = localStorage.getItem('id');
-      const receiver = selectedUser._id;
-      const id = response.data.newMessage._id;
-      socket.emit("message", { message: msg, socketId, sender, receiver, id });
-    } catch (error) {
-      console.log("Error in handleSubmit(Send message)", error);
-    }
-  }
 
   const getMessage = async () => {
     try {
       const responce = await axios.get(`${Backend_URL}/message/get-message`, {
         headers: { token: localStorage.getItem('id') },
-        params: { chatId: selectedUser.chatId }
+        params: { chatId: selectedChat.chatId }
       })
       setChatMessages(responce.data);
     } catch (error) {
@@ -63,49 +24,19 @@ function Chatting({ selectedUser }) {
 
   useEffect(() => {
     getMessage();
-  }, [selectedUser])
+  }, [selectedChat])
 
   return (
-    <div className='bg-blue-600'>
+    <div className='h-full flex flex-col'>
       {/* Top */}
-      <div className='bg-emerald-950 flex flex-col'>
-        <span>{selectedUser.name}</span>
-        <span> {onlineUserSocketId.some(item => item[selectedUser._id] != null) ? "Online" : "Offline"}</span>
+      <Header selectedChat={selectedChat} />
+      <hr />
+      <div className="flex flex-col h-full justify-between">
+        {/* messages */}
+        <Messages chatMessages={chatMessages} selectedChat={selectedChat} />
+        {/* sender */}
+        <Sending setChatMessages={setChatMessages} selectedChat={selectedChat} />
       </div>
-
-
-      {/* messages */}
-      <div>
-        {chatMessages.map((data) => {
-          if (data.sender == localStorage.getItem('id')) {
-            return (
-              <div key={data._id} className="chat chat-end">
-                <div className="chat-bubble">{data.message}</div>
-              </div>
-            )
-          }
-          else {
-            if (data.receiver == selectedUser._id || data.sender == selectedUser._id) {
-              return (
-                <div key={data._id} className="chat chat-start">
-                  <div className="chat-bubble">{data.message}</div>
-                </div>
-              )
-            }
-          }
-        })}
-      </div>
-
-
-      {/* sender */}
-      <div>
-        <form onSubmit={handleSubmit} >
-          <input type="text" className='border-2 border-white' value={text} onChange={(e) => setText(e.target.value)} />
-          <button className='bg-green-950 p-1 px-2 hover:cursor-pointer'>Send</button>
-        </form>
-      </div>
-
-
     </div>
   )
 }

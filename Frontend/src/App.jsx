@@ -5,7 +5,6 @@ import { useContext, useEffect } from "react"
 import { Context } from "./store/context"
 import axios from "axios"
 import Profile from "./Pages/Profile"
-import AddFriend from "./Pages/AddFriend"
 import CreateGroup from "./Pages/createGroup"
 import LoginSignup from "./Pages/LoginSignup"
 import { ToastContainer } from 'react-toastify';
@@ -32,14 +31,14 @@ function App() {
   }, [])
 
   return (
-    <div>
+    <div className="flex flex-col h-screen overflow-hidden scroll-smooth">
       <ToastContainer />
       <Navbar />
+      <hr className="border-1" />
       <Routes>
         <Route path='/' element={userData ? <Home /> : <Navigate to="/login-signup" />} />
         <Route path="/login-signup" element={ userData ? <Navigate to="/" />  : <LoginSignup />} />
         <Route path="/profile" element={ userData ? <Profile /> : <Navigate to="/login-signup" /> } />
-        <Route path="/search" element={<AddFriend />} />
         <Route path="/create-group" element={<CreateGroup />} />
       </Routes>
     </div>

@@ -16,11 +16,9 @@ const io = new Server(server, {
 let hashSocket = [];
 
 io.on('connection', (socket) => {
-  console.log('a user connected  ', socket.id);
 
   // const { userId } = socket.handshake.query;
   const { userId } = socket.handshake.auth;
-  console.log(userId);
   
   // hashSocket[userId] = socket.id;
   hashSocket.push({ [userId]: socket.id });
@@ -32,13 +30,11 @@ io.on('connection', (socket) => {
     io.emit("all-sockets", hashSocket);
   });
 
-  socket.on("message", ({message,socketId,sender,receiver,id}) => {
-    console.log("Mesage",socket.id);
-    io.to(socketId).emit("send-message",{message,sender,receiver,_id:id});
+  socket.on("message", ({message,socketId,sender,receiver,id,image}) => {
+    io.to(socketId).emit("send-message",{message,sender,receiver,_id:id,image});
   });
 
   socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
     // io.emit("all-sockets", Array.from(io.sockets.sockets.keys()));
     hashSocket = hashSocket.filter(obj => {
       const value = Object.values(obj)[0];

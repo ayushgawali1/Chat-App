@@ -1,21 +1,27 @@
 import React, { useState } from 'react'
 import Sidebar from '../Components/Sidebar'
 import Chatting from '../Components/Chatting';
-import NonChatting from './NonChatting';
+import NonChatting from '../Components/NonChatting';
 
 function Home() {
 
-  const [isUserSelected,setIsUserSelected] = useState(false);
-  const [selectedUser,setSeletedUser] = useState(null);
+  const [selectedChat,setSelectedChat] = useState(null);
 
   return (
-    <div className='flex items-center justify-center'>
-      <div className='flex'>
-        {/* sidebar */}
-        <Sidebar setSeletedUser={setSeletedUser} setIsUserSelected={setIsUserSelected} />
-        {/* ChatBar */}
-        {!isUserSelected ? <NonChatting /> : <Chatting selectedUser={selectedUser} /> }
+    <div className='flex w-full h-full'>
+
+      {/* sidebar */}
+      <div className='w-1/3'>
+        <Sidebar setSelectedChat={setSelectedChat}/>
       </div>
+
+      <hr className='border-1 h-full' />
+
+      {/* ChatBar */}
+      <div className=' w-full'>
+        {!selectedChat ? <NonChatting /> : <Chatting selectedChat={selectedChat} />}
+      </div>
+
     </div>
   )
 }
