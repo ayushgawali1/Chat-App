@@ -18,8 +18,19 @@ function Sending({ selectedChat, setChatMessages }) {
     e.preventDefault();
     const msg = text;
 
+    console.log(selectedChat);
+
+
     const formData = new FormData();
-    formData.append("receiverId", selectedChat._id);
+
+    if(selectedChat.isGroupChat){
+      formData.append("receiverId", selectedChat._id[0]._id);
+    }
+    else{
+      formData.append("receiverId", selectedChat._id);
+    }
+
+    
     formData.append("chatId", selectedChat.chatId);
     formData.append("msg", text);
     if (file) {
@@ -51,7 +62,7 @@ function Sending({ selectedChat, setChatMessages }) {
       const sender = localStorage.getItem('id');
       const receiver = selectedChat._id;
       const id = response.data.newMessage._id;
-      socket.emit("message", { message: msg, socketId, sender, receiver, id , image:response.data.newMessage.image });
+      socket.emit("message", { message: msg, socketId, sender, receiver, id, image: response.data.newMessage.image });
 
     } catch (error) {
       console.log("Error in handleSubmit(Send message)", error);

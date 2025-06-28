@@ -7,9 +7,10 @@ export const getAllUser = async (req, res) => {
 }
 
 export const sendMessage = async (req, res) => {
+    
     try {
         const senderId = req.userId;
-        const { receiverId, msg, chatId } = req.body;
+        const { receiverId, msg, chatId , isGroupChat } = req.body;
 
         let result = '';
 
@@ -19,9 +20,6 @@ export const sendMessage = async (req, res) => {
             });
             fs.unlinkSync(req.file.path);
         }
-
-
-
 
         const newMessage = new MessageModule({
             sender: senderId,

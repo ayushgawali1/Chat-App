@@ -1,4 +1,6 @@
 import userModule from "../modules/user.js";
+import cloudinary from '../lib/cloudinary.js';
+import fs from 'fs';
 
 // Signup
 export const signup = async (req, res) => {
@@ -39,7 +41,7 @@ export const getUser = async (req, res) => {
     try {
         const user = await userModule.findById(userId);
         if (!user) return res.status(404).json({ msg: 'User not found' });
-        res.status(201).json({userData:user});
+        res.status(201).json({ userData: user });
     } catch (error) {
         console.log("Error in getUser ", error.message);
         res.status(500).json({ msg: 'Server Side Error' });
@@ -54,6 +56,40 @@ export const getUsers = async (req, res) => {
             _id: { $ne: id }
         });
         res.status(201).json(users);
+    } catch (error) {
+        console.log("Error in getUsers ", error.message);
+        res.status(500).json({ msg: 'Server Side Error' });
+    }
+}
+
+
+// Update profile Image
+
+export const UpdateProfileImage = async (req, res) => {
+    const { id } = req.body;
+    try {
+
+        let user = await userModule.findById(id);
+        if (!user) return res.status(404).json({ msg: 'User not found' });
+
+
+        let result = '';
+
+        if (req.file) {
+            result = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'chat_images'
+            });
+            fs.unlinkSync(req.file.path);
+        }
+
+        user = await userModule.findByIdAndUpdate(
+            id,                          // The document _id
+            { $set: { profileImage: result.secure_url } }, // Update object
+            { new: true }                  // Options (return the updated document)
+        );
+
+        res.status(201).json({ userData: user });
+
     } catch (error) {
         console.log("Error in getUsers ", error.message);
         res.status(500).json({ msg: 'Server Side Error' });
