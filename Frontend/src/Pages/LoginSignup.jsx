@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react'
 import axios from 'axios';
 import { Context } from '../store/context';
 import { useNavigate } from "react-router-dom";
-import {toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 function LoginSignup() {
 
-    const { Backend_URL, setUserData } = useContext(Context);
+    const { Backend_URL, setUserData, connectSocket, socket } = useContext(Context);
 
     const navigate = useNavigate();
 
@@ -34,6 +34,8 @@ function LoginSignup() {
             toast.success(responce.data.msg);
             localStorage.setItem('id', responce.data.userData._id);
             setUserData(responce.data.userData);
+            socket.auth = { userId: responce.data.userData._id }
+            connectSocket();
             navigate('/');
         } catch (error) {
             console.log("Error in handleSubmit of LoginSignup", error);

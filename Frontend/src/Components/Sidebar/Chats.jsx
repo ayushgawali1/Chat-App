@@ -14,7 +14,6 @@ function Chats({ setSelectedChat }) {
         userId: localStorage.getItem('id')
       });
       setChats(responce.data);
-      console.log(responce.data);
     } catch (error) {
       console.log("Error in getAllUser", error.message);
     }
