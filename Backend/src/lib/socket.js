@@ -13,15 +13,13 @@ const io = new Server(server, {
   }
 });
 
-let hashSocket = [];
+let hashSocket = {};
 
 io.on('connection', (socket) => {
 
-  // const { userId } = socket.handshake.query;
   const { userId } = socket.handshake.auth;
   
-  // hashSocket[userId] = socket.id;
-  hashSocket.push({ [userId]: socket.id });
+  hashSocket[userId] = socket.id;  // new
 
   socket.on("get-all-sockets", () => {
     // const allSocketIds = Array.from(io.sockets.sockets.keys());
@@ -35,11 +33,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on("disconnect", () => {
-    // io.emit("all-sockets", Array.from(io.sockets.sockets.keys()));
-    hashSocket = hashSocket.filter(obj => {
-      const value = Object.values(obj)[0];
-      return value !== socket.id;
-    });
+    delete hashSocket.userId;
     io.emit("all-sockets", hashSocket);
   })
 });

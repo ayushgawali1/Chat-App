@@ -17,26 +17,18 @@ function Sending({ selectedChat, setChatMessages }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const msg = text;
-
-    console.log(selectedChat);
-
-
     const formData = new FormData();
-
     if(selectedChat.isGroupChat){
       formData.append("receiverId", selectedChat._id[0]._id);
     }
     else{
       formData.append("receiverId", selectedChat._id);
     }
-
-    
     formData.append("chatId", selectedChat.chatId);
     formData.append("msg", text);
     if (file) {
       formData.append("image", file); // "image" matches Multer field name
     }
-
     try {
       const response = await axios.post(`${Backend_URL}/message/send-message`,
         formData,
@@ -52,13 +44,7 @@ function Sending({ selectedChat, setChatMessages }) {
       ]);
       setText('');
       setFile(null);
-      const socketIdArray = onlineUserSocketId.filter((obj) => {
-        const userId = Object.keys(obj)[0];
-        if (userId == selectedChat._id) {
-          return obj[userId]
-        }
-      });
-      const socketId = socketIdArray[0][selectedChat._id];
+      const socketId = onlineUserSocketId[selectedChat._id];
       const sender = localStorage.getItem('id');
       const receiver = selectedChat._id;
       const id = response.data.newMessage._id;

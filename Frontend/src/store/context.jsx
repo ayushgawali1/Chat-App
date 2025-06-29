@@ -40,17 +40,15 @@ const ContextProvider = ({ children }) => {
 
         socket.emit("get-all-sockets");
         socket.on("all-sockets", (socketList) => {
-            const arr = socketList.filter((item) => {
-                if (Object.values(item)[0] != socket.id) {
-                    return item
-                }
-            })
-            setOnlineUserSocketId(arr);
-            console.log("🧾 All Connected Sockets:", arr);
+            const userId = localStorage.getItem('id');
+            const hashSocket = socketList;
+            delete hashSocket[userId];
+            setOnlineUserSocketId(hashSocket);
+            console.log("🧾 All Connected Sockets:", hashSocket);
         });
     }
 
-    const disconnectSocket = () => {
+    const disconnectSocket = (data) => {
         return (
             socket.disconnect()
         );
@@ -58,8 +56,6 @@ const ContextProvider = ({ children }) => {
 
     const sendReceiveMsg = () => {
         socket.on("send-message", (data) => {
-            console.log(data);
-            // setRealTimeChat(data);
             setChatMessages((prev) => [...prev,data]);
         })
     }
