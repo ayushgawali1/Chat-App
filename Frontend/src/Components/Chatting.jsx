@@ -24,6 +24,8 @@ function Chatting({ selectedChat }) {
 
   useEffect(() => {
     getMessage();
+    console.log(selectedChat);
+    
   }, [selectedChat])
 
   return (

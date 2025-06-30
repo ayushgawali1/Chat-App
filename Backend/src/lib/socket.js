@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on("disconnect", () => {
-    delete hashSocket.userId;
+    delete hashSocket[userId];
     io.emit("all-sockets", hashSocket);
   })
 });

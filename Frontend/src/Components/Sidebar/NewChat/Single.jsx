@@ -8,7 +8,7 @@ import { Context } from '../../../store/context';
 
 function Single({handleSearch,searchValue, setSearchValue,otherUsers,setShowNewChat}) {
 
-    const {Backend_URL} = useContext(Context)
+    const {Backend_URL} = useContext(Context);
 
     const handleClick = async (data) => {
         const userId = localStorage.getItem('id');
@@ -18,6 +18,8 @@ function Single({handleSearch,searchValue, setSearchValue,otherUsers,setShowNewC
                 user: data
             });
             console.log(responce.data);
+            console.log(responce.data);
+            
             // setSelectedChat(responce.data);
             setShowNewChat(false);
         } catch (error) {
