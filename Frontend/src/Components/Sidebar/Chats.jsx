@@ -28,7 +28,7 @@ function Chats({ setSelectedChat }) {
       <ul className='flex flex-col gap-4'>
         {chats.map((item) => {
           if (item.isGroupChat) {
-            const data = { name: item.name, chatId: item._id , isGroupChat:true,_id:item.users };
+            const data = { name: item.name, chatId: item._id , isGroupChat:true,_id:item.users,receiverId:item.users};
             return (
               <li className='flex items-center gap-3 ps-3 hover:bg-gray-900 py-2 me-3' key={item._id} onClick={() => setSelectedChat(data)}>
                 <img

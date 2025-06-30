@@ -12,6 +12,13 @@ export const sendMessage = async (req, res) => {
         const senderId = req.userId;
         const { receiverId, msg, chatId , isGroupChat } = req.body;
 
+        console.log(receiverId);
+
+        if(isGroupChat){
+            receiverId = JSON.parse(receiverId); // Convert string to array
+        }
+        
+
         let result = '';
 
         if (req.file) {

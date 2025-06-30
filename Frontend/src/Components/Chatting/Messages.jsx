@@ -32,11 +32,25 @@ function Messages({ chatMessages, selectedChat }) {
           )
         }
         else {
-          if (data.sender == selectedChat._id) {
+          if (selectedChat.isGroupChat) {
+            // selectedChat.receiverId.map((item) => {
+              // if (item._id == localStorage.getItem('id')) {
+                return (
+                  <div key={data._id} className="chat chat-start">
+                    <div className="chat-bubble">
+                      {data.image && <img loading="lazy" className='h-80 pt-3 pb-2 object-cover aspect-auto' src={data.image} alt={data.image} />}
+                      <span>{data.message}</span>
+                    </div>
+                  </div>
+                )
+              // }
+            // })
+          }
+          else if (data.sender == selectedChat._id && data.receiver == localStorage.getItem('id')) {
             return (
               <div key={data._id} className="chat chat-start">
                 <div className="chat-bubble">
-                  {data.image && <img  loading="lazy" className='h-80 pt-3 pb-2 object-cover aspect-auto' src={data.image} alt={data.image} />}
+                  {data.image && <img loading="lazy" className='h-80 pt-3 pb-2 object-cover aspect-auto' src={data.image} alt={data.image} />}
                   <span>{data.message}</span>
                 </div>
               </div>

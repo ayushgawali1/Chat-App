@@ -37,8 +37,8 @@ function App() {
       <hr className="border-1" />
       <Routes>
         <Route path='/' element={userData ? <Home /> : <Navigate to="/login-signup" />} />
-        <Route path="/login-signup" element={ userData ? <Navigate to="/" />  : <LoginSignup />} />
-        <Route path="/profile" element={ userData ? <Profile /> : <Navigate to="/login-signup" /> } />
+        <Route path="/login-signup" element={userData ? <Navigate to="/" /> : <LoginSignup />} />
+        <Route path="/profile" element={userData ? <Profile /> : <Navigate to="/login-signup" />} />
         <Route path="/create-group" element={<CreateGroup />} />
       </Routes>
     </div>

@@ -18,10 +18,11 @@ function Sending({ selectedChat, setChatMessages }) {
     e.preventDefault();
     const msg = text;
     const formData = new FormData();
-    if(selectedChat.isGroupChat){
-      formData.append("receiverId", selectedChat._id[0]._id);
+    if (selectedChat.isGroupChat) {
+      const receiverIds = selectedChat._id.map(user => user._id);
+      receiverIds.forEach((id, index) => formData.append(`receiver[${index}]`, id));
     }
-    else{
+    else {
       formData.append("receiverId", selectedChat._id);
     }
     formData.append("chatId", selectedChat.chatId);
