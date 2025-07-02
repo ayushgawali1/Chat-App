@@ -18,7 +18,7 @@ export const createChats = async (req, res) => {
     try {
         const chat = await ChatModule.findOne({
             users: { $all: [user._id, userId] },
-        });
+        }).populate("users", "name email");
 
         if (chat) return res.status(200).json(chat);
 
@@ -26,7 +26,9 @@ export const createChats = async (req, res) => {
             users: [user._id, userId],
         });
 
-        res.status(201).json(newChat);
+        const populatedChat = await ChatModule.findById(newChat._id).populate("users", "name email");
+
+        res.status(201).json(populatedChat);
 
     } catch (error) {
         console.log("Error in createChats ", error.message);

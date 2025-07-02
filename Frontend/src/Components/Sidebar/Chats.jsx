@@ -2,9 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../../store/context';
 import axios from 'axios';
 
-function Chats({ setSelectedChat }) {
-
-  const [chats, setChats] = useState([]);
+function Chats({ setSelectedChat , chats, setChats , selectedChat }) {
 
   const { Backend_URL, onlineUserSocketId } = useContext(Context);
 
@@ -24,9 +22,9 @@ function Chats({ setSelectedChat }) {
   }, []);
 
   return (
-    <div className='mt-4 overflow-auto h-[588px] pb-2'>
+    <div className='mt-4 overflow-auto h-[588px] pb-2 ms-2 me-1'>
       <ul className='flex flex-col gap-4'>
-        {chats.map((item) => {
+        {chats?.map((item) => {
           if (item.isGroupChat) {
             const data = { name: item.name, chatId: item._id, isGroupChat: true, _id: item.users, receiverId: item.users };
             return (
@@ -51,9 +49,9 @@ function Chats({ setSelectedChat }) {
 
             const isOnline = onlineUserSocketId[otherUser._id] ? true : false ;
             
-            const data = { _id: otherUser._id, name: otherUser.name, chatId: item._id, isGroupChat: false };
+            const data = { receiverId: otherUser._id, name: otherUser.name, chatId: item._id, isGroupChat: false };
             return (
-              <li className='flex items-center gap-3 ps-3 hover:bg-gray-900 py-2 me-3' key={otherUser._id} onClick={() => setSelectedChat(data)}>
+              <li className={`${selectedChat?.chatId == item._id ? "bg-red-600" : 'hover:bg-gray-900'} cursor-pointer flex rounded-md items-center gap-3 ps-3  py-2 me-3`} key={otherUser._id} onClick={() => setSelectedChat(data)}>
                 <img
                   className='h-10 rounded-full'
                   src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"

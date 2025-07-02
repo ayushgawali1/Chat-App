@@ -7,7 +7,7 @@ function Header({ selectedChat }) {
       <div className='flex flex-col justify-center'>
         <span>{selectedChat.name}</span>
         <span className='text-sm/5'>Offline</span>
-        {/* <span> {onlineUserSocketId.some(item => item[selectedChat._id] != null) ? "Online" : "Offline"}</span> */}
+        {/* <span> {onlineUserSocketId.some(item => item[selectedChat.receiverId] != null) ? "Online" : "Offline"}</span> */}
       </div>
     </div>
   )

@@ -46,7 +46,7 @@ function Messages({ chatMessages, selectedChat }) {
               // }
             // })
           }
-          else if (data.sender == selectedChat._id && data.receiver == localStorage.getItem('id')) {
+          else if (data.sender == selectedChat.receiverId && data.receiver == localStorage.getItem('id')) {
             return (
               <div key={data._id} className="chat chat-start">
                 <div className="chat-bubble">

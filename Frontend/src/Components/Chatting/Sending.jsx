@@ -19,11 +19,13 @@ function Sending({ selectedChat, setChatMessages }) {
     const msg = text;
     const formData = new FormData();
     if (selectedChat.isGroupChat) {
-      const receiverIds = selectedChat._id.map(user => user._id);
+      console.log("Group Chat");
+      const receiverIds = selectedChat.receiverId.map(user => user._id);
       receiverIds.forEach((id, index) => formData.append(`receiver[${index}]`, id));
     }
     else {
-      formData.append("receiverId", selectedChat._id);
+      console.log("Single Chat");
+      formData.append("receiverId", selectedChat.receiverId);
     }
     formData.append("chatId", selectedChat.chatId);
     formData.append("msg", text);
@@ -45,9 +47,9 @@ function Sending({ selectedChat, setChatMessages }) {
       ]);
       setText('');
       setFile(null);
-      const socketId = onlineUserSocketId[selectedChat._id];
+      const socketId = onlineUserSocketId[selectedChat.receiverId];
       const sender = localStorage.getItem('id');
-      const receiver = selectedChat._id;
+      const receiver = selectedChat.receiverId;
       const id = response.data.newMessage._id;
       socket.emit("message", { message: msg, socketId, sender, receiver, id, image: response.data.newMessage.image });
 

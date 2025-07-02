@@ -2,7 +2,7 @@ import { IoCreateOutline } from "react-icons/io5";
 import NewChats from "./NewChats";
 import { useState } from "react";
 
-function Header({setSelectedChat}) {
+function Header({setSelectedChat,setChats,chats}) {
 
     const [showNewChat, setShowNewChat] = useState(false);
 
@@ -16,7 +16,7 @@ function Header({setSelectedChat}) {
                 >
                     <IoCreateOutline className='text-xl' />
                 </span>
-                {showNewChat && <NewChats setShowNewChat={setShowNewChat} setSelectedChat={setSelectedChat}  />}
+                {showNewChat && <NewChats chats={chats} setChats={setChats} setShowNewChat={setShowNewChat} setSelectedChat={setSelectedChat}  />}
             </div>
         </div>
     )

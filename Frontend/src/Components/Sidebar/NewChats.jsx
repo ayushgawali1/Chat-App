@@ -5,7 +5,7 @@ import axios from "axios";
 import { Context } from "../../store/context";
 import Single from "./NewChat/Single";
 
-function NewChats({ setShowNewChat, setSelectedChat }) {
+function NewChats({chats, setShowNewChat, setSelectedChat , setChats }) {
 
     const { Backend_URL } = useContext(Context);
 
@@ -32,7 +32,7 @@ function NewChats({ setShowNewChat, setSelectedChat }) {
 
 
     return (
-        <div className='absolute bg-purple-800 top-10 rounded-md z-10'>
+        <div className='absolute bg-gray-800 top-10 rounded-md z-10'>
             {isCreatingGroup ?
                 <div className="p-2 flex flex-col gap-3">
                     <div className="flex items-center">
@@ -88,7 +88,7 @@ function NewChats({ setShowNewChat, setSelectedChat }) {
                     </ul>
                 </div>
                 :
-                <Single otherUsers={otherUsers} setShowNewChat={setShowNewChat} handleSearch={handleSearch} searchValue={searchValue} setSearchValue={setSearchValue} />
+                <Single chats={chats} setChats={setChats} setSelectedChat={setSelectedChat} otherUsers={otherUsers} setShowNewChat={setShowNewChat} handleSearch={handleSearch} searchValue={searchValue} setSearchValue={setSearchValue} />
             }
         </div>
     )

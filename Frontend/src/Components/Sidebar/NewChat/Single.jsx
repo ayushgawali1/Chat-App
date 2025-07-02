@@ -6,9 +6,9 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Context } from '../../../store/context';
 
-function Single({handleSearch,searchValue, setSearchValue,otherUsers,setShowNewChat}) {
+function Single({ chats, setChats, setSelectedChat, handleSearch, searchValue, setSearchValue, otherUsers, setShowNewChat }) {
 
-    const {Backend_URL} = useContext(Context);
+    const { Backend_URL } = useContext(Context);
 
     const handleClick = async (data) => {
         const userId = localStorage.getItem('id');
@@ -17,13 +17,17 @@ function Single({handleSearch,searchValue, setSearchValue,otherUsers,setShowNewC
                 userId,
                 user: data
             });
-            console.log(responce.data);
-            console.log(responce.data);
-            
-            // setSelectedChat(responce.data);
+            const otherUser = responce.data.users.find(u => u._id !== userId);
+            const userData = { receiverId: otherUser._id, name: otherUser.name, chatId: responce.data._id, isGroupChat: false };
+            setSelectedChat(userData);
             setShowNewChat(false);
+            setChats((prev) => {
+                const exists = prev.some((item) => item._id === responce.data._id);
+                if (exists) return prev;
+                return ([...prev, responce.data]);
+            });
         } catch (error) {
-            console.log("Error in HandleClick of AddFriend",error);
+            console.log("Error in HandleClick of AddFriend", error);
         }
     }
 
