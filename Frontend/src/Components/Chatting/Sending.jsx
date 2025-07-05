@@ -51,7 +51,9 @@ function Sending({ selectedChat, setChatMessages }) {
       const sender = localStorage.getItem('id');
       const receiver = selectedChat.receiverId;
       const id = response.data.newMessage._id;
-      socket.emit("message", { message: msg, socketId, sender, receiver, id, image: response.data.newMessage.image });
+      console.log(response.data);
+      
+      socket.emit("message", { message: msg, socketId, sender, receiver, id, image: response.data.newMessage.image ,chatId:response.data.newMessage.chatId });
 
     } catch (error) {
       console.log("Error in handleSubmit(Send message)", error);

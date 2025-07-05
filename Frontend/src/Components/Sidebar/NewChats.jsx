@@ -23,7 +23,6 @@ function NewChats({chats, setShowNewChat, setSelectedChat , setChats }) {
                 name: searchValue,
                 id: localStorage.getItem('id')
             });
-            console.log(responce.data);
             setOtherUsers(responce.data);
         } catch (error) {
             console.log("Error in handleSearch", error);

@@ -1,14 +1,17 @@
-import {useState} from 'react'
+import {useContext, useState} from 'react'
 import Header from './Sidebar/Header';
 import Chats from './Sidebar/Chats';
 import { useNavigate } from 'react-router-dom';
+import { Context } from '../store/context';
 
 
 function Sidebar({ setSelectedChat , selectedChat }) {
 
     const navigate = useNavigate();
 
-    const [chats, setChats] = useState([]);
+    const {chats,setChats} = useContext(Context);
+
+    // const [chats, setChats] = useState([]);
 
     return (
         <div className='flex flex-col'>

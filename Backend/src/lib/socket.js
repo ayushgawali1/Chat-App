@@ -18,8 +18,8 @@ let hashSocket = {};
 io.on('connection', (socket) => {
 
   const { userId } = socket.handshake.auth;
-  
-  hashSocket[userId] = socket.id;  // new
+
+  hashSocket[userId] = socket.id;
 
   socket.on("get-all-sockets", () => {
     // const allSocketIds = Array.from(io.sockets.sockets.keys());
@@ -28,9 +28,13 @@ io.on('connection', (socket) => {
     io.emit("all-sockets", hashSocket);
   });
 
-  socket.on("message", ({message,socketId,sender,receiver,id,image}) => {
-    io.to(socketId).emit("send-message",{message,sender,receiver,_id:id,image});
+  socket.on("message", ({ message, socketId, sender, receiver, id, image, chatId }) => {
+    io.to(socketId).emit("send-message", { message, sender, receiver, _id: id, image, chatId });
   });
+
+  socket.on('sidebar-user', ({ socketId, chatData }) => {
+    io.to(socketId).emit("get-newly-added-sidebar-user",chatData);
+  })
 
   socket.on("disconnect", () => {
     delete hashSocket[userId];

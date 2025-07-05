@@ -8,7 +8,7 @@ import { Context } from '../../../store/context';
 
 function Single({ chats, setChats, setSelectedChat, handleSearch, searchValue, setSearchValue, otherUsers, setShowNewChat }) {
 
-    const { Backend_URL } = useContext(Context);
+    const { Backend_URL , onlineUserSocketId , socket } = useContext(Context);
 
     const handleClick = async (data) => {
         const userId = localStorage.getItem('id');
@@ -21,11 +21,16 @@ function Single({ chats, setChats, setSelectedChat, handleSearch, searchValue, s
             const userData = { receiverId: otherUser._id, name: otherUser.name, chatId: responce.data._id, isGroupChat: false };
             setSelectedChat(userData);
             setShowNewChat(false);
+            let exists = false;
             setChats((prev) => {
-                const exists = prev.some((item) => item._id === responce.data._id);
+                exists = prev.some((item) => item._id === responce.data._id);
                 if (exists) return prev;
                 return ([...prev, responce.data]);
             });
+            if (exists) return;
+            const socketId = onlineUserSocketId[otherUser._id];
+            if(!socketId) return ;
+            socket.emit("sidebar-user",{socketId,chatData:responce.data});
         } catch (error) {
             console.log("Error in HandleClick of AddFriend", error);
         }

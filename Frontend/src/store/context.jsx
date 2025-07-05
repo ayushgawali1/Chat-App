@@ -9,8 +9,12 @@ export const Context = createContext({
     connectSocket: () => { },
     disconnectSocket: () => { },
     onlineUserSocketId: [],
-    chatMessages:[],
-    setChatMessages:()=>{},
+    chatMessages: [],
+    setChatMessages: () => { },
+    newMessage: [],
+    setNewMessage: () => { },
+    chats:[],
+    setChats:() => { },
 });
 
 const Backend_URL = "http://localhost:5000";
@@ -28,6 +32,8 @@ const ContextProvider = ({ children }) => {
     const [userData, setUserData] = useState(null);
     const [onlineUserSocketId, setOnlineUserSocketId] = useState([]);
     const [chatMessages, setChatMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState([]);
+    const [chats, setChats] = useState([]);
 
 
     const connectSocket = () => {
@@ -56,19 +62,38 @@ const ContextProvider = ({ children }) => {
 
     const sendReceiveMsg = () => {
         socket.on("send-message", (data) => {
-            setChatMessages((prev) => [...prev,data]);
+            // setNewMessage((prev) => {
+            //     const exists = prev.find((item) => item.sender == data.sender && item.receiver == data.receiver);
+            //     if (exists) {
+            //         // Replace the existing message with the updated one
+            //         return prev.map((item) =>
+            //             item.sender == data.sender && item.receiver == data.receiver ? data : item
+            //         );
+            //     }
+            //     return [...prev, data]
+            // });
+            setChatMessages((prev) => [...prev, data]);
         })
+    }
+
+    const getSidebarUser = () => {
+        socket.on("get-newly-added-sidebar-user",(chatData)=>{
+            setChats((prev) => ([...prev,chatData]));
+        });
     }
 
 
     useEffect(() => {
+        getSidebarUser();
         sendReceiveMsg();
     }, [])
 
     const value = {
         Backend_URL, userData, setUserData,
-        socket, connectSocket, sendReceiveMsg, disconnectSocket, onlineUserSocketId ,
-        chatMessages, setChatMessages
+        socket, connectSocket, sendReceiveMsg, disconnectSocket, onlineUserSocketId,
+        chatMessages, setChatMessages,
+        newMessage, setNewMessage,
+        chats, setChats
     }
 
     return (
